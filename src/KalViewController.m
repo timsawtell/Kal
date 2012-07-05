@@ -31,6 +31,11 @@ void mach_absolute_difference(uint64_t end, uint64_t start, struct timespec *tp)
 NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotification";
 
 @interface KalViewController ()
+<<<<<<< HEAD
+=======
+@property (nonatomic, readwrite) NSDate *initialDate;
+@property (nonatomic, readwrite) NSDate *selectedDate;
+>>>>>>> juice/master
 - (KalView*)calendarView;
 @end
 
@@ -124,7 +129,7 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
 - (void)loadedDataSource:(id<KalDataSource>)theDataSource;
 {
   NSArray *markedDates = [theDataSource markedDatesFrom:logic.fromDate to:logic.toDate];
-  NSMutableArray *dates = [[markedDates mutableCopy] autorelease];
+  NSMutableArray *dates = [markedDates mutableCopy];
   for (int i=0; i<[dates count]; i++)
     [dates replaceObjectAtIndex:i withObject:[KalDate dateFromNSDate:[dates objectAtIndex:i]]];
   
@@ -178,12 +183,25 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
   tableView = kalView.tableView;
   tableView.dataSource = dataSource;
   tableView.delegate = delegate;
+<<<<<<< HEAD
   [tableView retain];
   [kalView selectDate:[KalDate dateFromNSDate:initialSelectedDate]];
   [kalView release];
   [self reloadData];
 }
 
+=======
+  [kalView selectDate:[KalDate dateFromNSDate:self.initialDate]];
+  [self reloadData];
+}
+
+- (void)viewDidUnload
+{
+  [super viewDidUnload];
+  tableView = nil;
+}
+
+>>>>>>> juice/master
 - (void)viewWillAppear:(BOOL)animated
 {
   [super viewWillAppear:animated];
@@ -202,10 +220,13 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationSignificantTimeChangeNotification object:nil];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:KalDataSourceChangedNotification object:nil];
+<<<<<<< HEAD
   [initialSelectedDate release];
   [logic release];
   [tableView release];
   [super dealloc];
+=======
+>>>>>>> juice/master
 }
 
 @end
