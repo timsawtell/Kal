@@ -31,23 +31,21 @@ void mach_absolute_difference(uint64_t end, uint64_t start, struct timespec *tp)
 NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotification";
 
 @interface KalViewController ()
-<<<<<<< HEAD
-=======
 @property (nonatomic, readwrite) NSDate *initialDate;
 @property (nonatomic, readwrite) NSDate *selectedDate;
->>>>>>> juice/master
 - (KalView*)calendarView;
 @end
 
 @implementation KalViewController
 
-@synthesize dataSource, delegate;
+@synthesize dataSource, delegate, initialDate, selectedDate;
 
-- (id)initWithSelectedDate:(NSDate *)selectedDate
+- (id)initWithSelectedDate:(NSDate *)date
 {
   if ((self = [super init])) {
-    logic = [[KalLogic alloc] initForDate:selectedDate];
-    initialSelectedDate = [selectedDate retain];
+    logic = [[KalLogic alloc] initForDate:date];
+    self.initialDate = date;
+    self.selectedDate = date;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(significantTimeChangeOccurred) name:UIApplicationSignificantTimeChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:KalDataSourceChangedNotification object:nil];
   }
@@ -99,6 +97,7 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
 
 - (void)didSelectDate:(KalDate *)date
 {
+  self.selectedDate = [date NSDate];
   NSDate *from = [[date NSDate] cc_dateByMovingToBeginningOfDay];
   NSDate *to = [[date NSDate] cc_dateByMovingToEndOfDay];
   [self clearTable];
@@ -174,6 +173,12 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
 // -----------------------------------------------------------------------------------
 #pragma mark UIViewController
 
+- (void)didReceiveMemoryWarning
+{
+  self.initialDate = self.selectedDate; // must be done before calling super
+  [super didReceiveMemoryWarning];
+}
+
 - (void)loadView
 {
   if (!self.title)
@@ -183,14 +188,6 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
   tableView = kalView.tableView;
   tableView.dataSource = dataSource;
   tableView.delegate = delegate;
-<<<<<<< HEAD
-  [tableView retain];
-  [kalView selectDate:[KalDate dateFromNSDate:initialSelectedDate]];
-  [kalView release];
-  [self reloadData];
-}
-
-=======
   [kalView selectDate:[KalDate dateFromNSDate:self.initialDate]];
   [self reloadData];
 }
@@ -201,7 +198,6 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
   tableView = nil;
 }
 
->>>>>>> juice/master
 - (void)viewWillAppear:(BOOL)animated
 {
   [super viewWillAppear:animated];
@@ -220,13 +216,6 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationSignificantTimeChangeNotification object:nil];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:KalDataSourceChangedNotification object:nil];
-<<<<<<< HEAD
-  [initialSelectedDate release];
-  [logic release];
-  [tableView release];
-  [super dealloc];
-=======
->>>>>>> juice/master
 }
 
 @end

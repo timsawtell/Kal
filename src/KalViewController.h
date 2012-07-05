@@ -24,15 +24,7 @@
 {
   KalLogic *logic;
   UITableView *tableView;
-<<<<<<< HEAD
-  id <UITableViewDelegate> delegate;
-  id <KalDataSource> dataSource;
-  NSDate *initialSelectedDate;
-}
 
-@property (nonatomic, assign) id<UITableViewDelegate> delegate;
-@property (nonatomic, assign) id<KalDataSource> dataSource;
-=======
   id <UITableViewDelegate> __weak delegate;
   id <KalDataSource> __weak dataSource;
   NSDate *initialDate;                    // The date that the calendar was initialized with *or* the currently selected date when the view hierarchy was torn down in order to satisfy a low memory warning.
@@ -42,7 +34,7 @@
 @property (nonatomic, weak) id<UITableViewDelegate> delegate;
 @property (nonatomic, weak) id<KalDataSource> dataSource;
 @property (nonatomic, readonly) NSDate *selectedDate;
->>>>>>> juice/master
+
 
 - (id)initWithSelectedDate:(NSDate *)selectedDate;  // designated initializer. When the calendar is first displayed to the user, the month that contains 'selectedDate' will be shown and the corresponding tile for 'selectedDate' will be automatically selected.
 - (void)reloadData;                                 // If you change the KalDataSource after the KalViewController has already been displayed to the user, you must call this method in order for the view to reflect the new data.
