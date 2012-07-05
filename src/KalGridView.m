@@ -36,12 +36,7 @@ static NSString *kSlideAnimationId = @"KalSwitchMonths";
 #endif
 
 +(CGSize) tileSize
-{
-	if (KAL_IPAD_VERSION)
-	{
-		return CGSizeMake(110.f, 104.f);
-	}
-	
+{	
 	return CGSizeMake(46.f, 44.f);
 }
 
