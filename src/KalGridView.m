@@ -36,7 +36,12 @@ static NSString *kSlideAnimationId = @"KalSwitchMonths";
 #endif
 
 +(CGSize) tileSize
-{	
+{
+	if (KAL_IPAD_VERSION)
+	{
+		return CGSizeMake(56.f, 44.f);
+	}
+	
 	return CGSizeMake(46.f, 44.f);
 }
 
@@ -50,10 +55,9 @@ static NSString *kSlideAnimationId = @"KalSwitchMonths";
   // to accomodate all 7 columns. The 7th day's 2px inner stroke
   // will be clipped off the screen, but that's fine because
   // MobileCal does the same thing.
-  CGSize tileSize = [KalGridView tileSize];
-  if( frame.size.width < 7 * tileSize.width )
-    frame.size.width = 7 * tileSize.width;
-  
+
+  frame.size.width = 7 * [KalGridView tileSize].width;    
+
   if (self = [super initWithFrame:frame]) {
     self.clipsToBounds = YES;
     logic = theLogic;
