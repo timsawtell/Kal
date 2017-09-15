@@ -31,9 +31,11 @@ typedef char KalTileType;
 @property (nonatomic, getter=isSelected) BOOL selected;
 @property (nonatomic, getter=isMarked) BOOL marked;
 @property (nonatomic) KalTileType type;
+@property (nonatomic) CGSize tileSize;
 
 - (void)resetState;
 - (BOOL)isToday;
 - (BOOL)belongsToAdjacentMonth;
+- (id)initWithFrame:(CGRect)frame tileSize:(CGSize)tileSize;
 
 @end

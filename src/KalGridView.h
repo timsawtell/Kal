@@ -31,6 +31,7 @@
 
 @property (nonatomic, readonly) BOOL transitioning;
 @property (nonatomic, readonly) KalDate *selectedDate;
+@property (nonatomic) CGSize kTileSize;
 
 - (id)initWithFrame:(CGRect)frame logic:(KalLogic *)logic delegate:(id<KalViewDelegate>)delegate;
 - (void)selectDate:(KalDate *)date;

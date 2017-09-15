@@ -17,13 +17,14 @@
 #define SLIDE_UP 1
 #define SLIDE_DOWN 2
 
-const CGSize kTileSize = { 46.f, 44.f };
+const CGFloat kTileHeight = 44.f;
 
 static NSString *kSlideAnimationId = @"KalSwitchMonths";
 
 @interface KalGridView ()
 @property (nonatomic, retain) KalTileView *selectedTile;
 @property (nonatomic, retain) KalTileView *highlightedTile;
+@property (nonatomic) CGFloat kTileWidth;
 - (void)swapMonthViews;
 @end
 
@@ -41,7 +42,7 @@ static NSString *kSlideAnimationId = @"KalSwitchMonths";
   // to accomodate all 7 columns. The 7th day's 2px inner stroke
   // will be clipped off the screen, but that's fine because
   // MobileCal does the same thing.
-  frame.size.width = 7 * kTileSize.width;
+  self.kTileWidth = frame.size.width / 7;
   
   if (self = [super initWithFrame:frame]) {
     self.clipsToBounds = YES;
@@ -49,8 +50,9 @@ static NSString *kSlideAnimationId = @"KalSwitchMonths";
     delegate = theDelegate;
     
     CGRect monthRect = CGRectMake(0.f, 0.f, frame.size.width, frame.size.height);
-    frontMonthView = [[KalMonthView alloc] initWithFrame:monthRect];
-    backMonthView = [[KalMonthView alloc] initWithFrame:monthRect];
+      CGSize tileSize = CGSizeMake(self.kTileWidth, kTileHeight);
+      frontMonthView = [[KalMonthView alloc] initWithFrame:monthRect tileSize:tileSize];
+    backMonthView = [[KalMonthView alloc] initWithFrame:monthRect tileSize:tileSize];
     backMonthView.hidden = YES;
     [self addSubview:backMonthView];
     [self addSubview:frontMonthView];
@@ -160,12 +162,12 @@ static NSString *kSlideAnimationId = @"KalSwitchMonths";
   // set initial positions before the slide
   if (direction == SLIDE_UP) {
     backMonthView.top = keepOneRow
-      ? frontMonthView.bottom - kTileSize.height
+      ? frontMonthView.bottom - kTileHeight
       : frontMonthView.bottom;
   } else if (direction == SLIDE_DOWN) {
     NSUInteger numWeeksToKeep = keepOneRow ? 1 : 0;
     NSInteger numWeeksToSlide = [backMonthView numWeeks] - numWeeksToKeep;
-    backMonthView.top = -numWeeksToSlide * kTileSize.height;
+    backMonthView.top = -numWeeksToSlide * kTileHeight;
   } else {
     backMonthView.top = 0.f;
   }
