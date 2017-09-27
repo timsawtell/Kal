@@ -60,7 +60,9 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
 {
   if (dataSource != aDataSource) {
     dataSource = aDataSource;
-    tableView.dataSource = dataSource;
+      dispatch_async(dispatch_get_main_queue(), ^{
+          tableView.dataSource = dataSource;
+      });
   }
 }
 
